@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 const app = express();
 require('dotenv').config()
@@ -22,6 +22,28 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
+
+        const db = client.db('sprint-db')
+        const marathonsCollection = db.collection('marathons')
+
+        app.post('/add-marathon', async (req, res) => {
+            const marathonData = req.body;
+            const result = await marathonsCollection.insertOne(marathonData);
+            res.send(result);
+        })
+
+        app.get('/all-marathons', async (req, res) => {
+            const result = await marathonsCollection.find().toArray()
+            res.send(result);
+        })
+
+        app.get('/marathon-details/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) }
+            const result = await marathonsCollection.findOne(query)
+            res.send(result);
+        })
+
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         // Send a ping to confirm a successful connection
