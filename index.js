@@ -38,6 +38,11 @@ async function run() {
             res.send(result);
         })
 
+        app.get('/six-marathons', async (req, res) => {
+            const result = await marathonsCollection.find().limit(6).toArray()
+            res.send(result);
+        })
+
         app.get('/marathon-details/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) }
