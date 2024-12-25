@@ -8,7 +8,9 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config()
 
 const corsOptions = {
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173',
+        'https://assignment-11-project-68d98.web.app',
+    ],
     credentials: true,
     optionalSuccessStatus: 200,
 }
@@ -239,10 +241,10 @@ async function run() {
         })
 
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
         // await client.close();
