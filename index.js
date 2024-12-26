@@ -10,6 +10,7 @@ require('dotenv').config()
 const corsOptions = {
     origin: ['http://localhost:5173',
         'https://assignment-11-project-68d98.web.app',
+        'https://assignment-11-project.netlify.app',
     ],
     credentials: true,
     optionalSuccessStatus: 200,
@@ -175,6 +176,17 @@ async function run() {
             const result = await applicantsCollection.find(query).toArray()
             res.send(result);
 
+        })
+
+        app.get('/myMarathonApplicant/:email', verifyToken, async (req, res) => {
+            const decodedEmail = req.user.email
+            const email = req.params.email
+            const query = { 'organizer': email }
+
+            if (decodedEmail !== email) return res.status(401).send({ message: 'Unauthorized Access' })
+
+            const result = await applicantsCollection.find(query).toArray()
+            res.send(result);
         })
 
         app.get('/applyInfo/:id', verifyToken, async (req, res) => {
